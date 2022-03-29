@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{32C3BDE6-E125-3128-82C1-25D0441455A3}</ProjectGuid>
+    <ProjectGuid>{4F9212E2-498F-3E17-88EB-5F55920B82A0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -56,11 +56,13 @@
     <Analyzer Include="E:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\CarControl.cs" />
-    <Compile Include="Assets\Scripts\CameraFollow.cs" />
-    <Compile Include="Assets\Scripts\StartTimer.cs" />
     <Compile Include="Assets\Scripts\ButtomMapSelect.cs" />
+    <Compile Include="Assets\Scripts\ChangeCar.cs" />
     <Compile Include="Assets\Scripts\ButtonStart.cs" />
+    <Compile Include="Assets\Scripts\StartTimer.cs" />
+    <Compile Include="Assets\Scripts\CarObj.cs" />
+    <Compile Include="Assets\Scripts\CameraFollow.cs" />
+    <Compile Include="Assets\Scripts\CarControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

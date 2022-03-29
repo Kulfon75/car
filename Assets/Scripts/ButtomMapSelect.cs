@@ -1,19 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-public class ButtomMapSelect : MonoBehaviour, IPointerClickHandler
+public class ButtomMapSelect : MonoBehaviour
 {
-    public GameObject Player;
-    public int mapa;
-    public Vector3 mapPos;
-    public ButtonStart Bst;
+    [SerializeField] private GameObject Player;
+    [SerializeField] private int mapa;
+    [SerializeField] private Vector3 mapPos;
+    [SerializeField] private ButtonStart Bst;
+    [SerializeField] private GameObject MapObj;
 
-    public void OnPointerClick(PointerEventData pointerEventData)
+    public void SelectMap()
     {
+        Destroy(Bst.CurrentMapObj.gameObject);
+        Bst.CurrentMapObj = Instantiate(MapObj);
         Bst.mapNum = mapa;
         Player.transform.position = mapPos;
         Camera.main.orthographicSize = 120;
     }
+
 }

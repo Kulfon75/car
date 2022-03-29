@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 
-public class ButtonStart : MonoBehaviour, IPointerClickHandler
+public class ButtonStart : MonoBehaviour
 {
-    public Canvas menu;
+    [SerializeField] private Canvas menu;
     public int mapNum;
-    public void OnPointerClick(PointerEventData pointerEventData)
+    public GameObject CurrentMapObj;
+    public void StartMap()
     {
         Camera.main.orthographicSize = 34;
         menu.enabled = false;

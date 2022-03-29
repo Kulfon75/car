@@ -1,15 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CarControl : MonoBehaviour
 {
     [Header("Carr Variables")]
-    public float driftFactor = 0.95f;
-    public float accelerationFactor = 20.0f;
-    public float turningFactor = 0.3f;
-    public float breakForce = 1.5f;
-      
+    [SerializeField] private float driftFactor = 0.95f;
+    [SerializeField] private float accelerationFactor = 200.0f;
+    [SerializeField] private float turningFactor = 2.0f;
+    [SerializeField] private float breakForce = 0.9f;
+
+    public CarObj car;
+
     float acceleration;
     float steeringImp;
     float rotationAngle;
@@ -22,6 +22,7 @@ public class CarControl : MonoBehaviour
     Rigidbody2D carRigid;
     void Start()
     {
+        SwicthCar();
         carRigid = GetComponent<Rigidbody2D>();
         carRigid.drag = 3;
     }
@@ -29,22 +30,25 @@ public class CarControl : MonoBehaviour
     void Update()
     {
         CheckMovement();
+    }
+
+    private void FixedUpdate()
+    {
         ForceCar();
         Steering();
         KillTorque();
     }
-
     void CheckMovement()
     {
         acceleration = Input.GetAxis("Vertical");
         steeringImp = Input.GetAxis("Horizontal");
-        if(Input.GetKey("space"))
+        if(Input.GetButton("Break"))
         {
             if(carRigid.drag < 100)
             carRigid.drag += carRigid.drag * breakForce * Time.deltaTime;
             if (driftFactor < 1)
             {
-                driftFactor += 5f * Time.deltaTime;
+                driftFactor += 10f * Time.deltaTime;
                 TimeDrift = 0.5f;
             }
 
@@ -53,7 +57,7 @@ public class CarControl : MonoBehaviour
         {
             carRigid.drag = CurrentDrag;
             if(driftFactor > 0)
-                driftFactor -= 5 * Time.deltaTime;
+                driftFactor -= 2 * Time.deltaTime;
             else
                 TimeDrift -= Time.deltaTime;
         }
@@ -68,9 +72,12 @@ public class CarControl : MonoBehaviour
 
     void Steering()
     {
-        float minSpeedTurn = carRigid.velocity.magnitude / 8;
+        float minSpeedTurn = carRigid.velocity.magnitude;
         minSpeedTurn = Mathf.Clamp01(minSpeedTurn);
+        if (acceleration < 0)
+            steeringImp = -steeringImp;
         rotationAngle -= steeringImp * turningFactor * minSpeedTurn;
+        
         carRigid.MoveRotation(rotationAngle);
     }
 
@@ -81,14 +88,10 @@ public class CarControl : MonoBehaviour
         carRigid.velocity = forwardVel + rightVel * driftFactor;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision != null)
         {
-            if (collision.tag == "Dirt")
-            {
-                CurrentDrag = DragOnDirt;
-            }
             if (collision.tag == "Road")
             {
                 CurrentDrag = DragOnRoad;
@@ -98,5 +101,24 @@ public class CarControl : MonoBehaviour
                 carRigid.AddForce(collision.transform.up * 200, ForceMode2D.Force);
             }
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Road")
+        {
+            CurrentDrag = DragOnDirt;
+        }
+    }
+
+    public void SwicthCar()
+    {
+        GetComponent<SpriteRenderer>().sprite = car.carSprite;
+        driftFactor = car.driftFactor;
+        accelerationFactor = car.accelerationFactor;
+        turningFactor = car.turningFactor;
+        breakForce = car.breakForce;
+        DragOnDirt = car.DragOnDirt;
+        DragOnRoad = car.DragOnRoad;
     }
 }
